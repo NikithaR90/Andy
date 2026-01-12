@@ -9,15 +9,76 @@ import ReferAndEarn from './components/ReferAndEarn';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import SavingsEstimator from './components/SavingsEstimator';
+import Dashboard from './components/Dashboard';
+import AndyChatbot from './components/AndyChatbot';
+import { Sparkles, Users, ArrowRight, Gift } from 'lucide-react';
 
 const App: React.FC = () => {
   const [showEstimator, setShowEstimator] = useState(false);
+  const [showReferDetail, setShowReferDetail] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   const [currentAddress, setCurrentAddress] = useState('');
+  const [userSession, setUserSession] = useState<{ isLoggedIn: boolean; propertyData: any } | null>(null);
 
   const handleEstimate = (address: string) => {
     setCurrentAddress(address);
     setShowEstimator(true);
   };
+
+  const handleLogin = (data: any) => {
+    setUserSession({ isLoggedIn: true, propertyData: data });
+    setShowEstimator(false);
+  };
+
+  const handleLogout = () => {
+    setUserSession(null);
+  };
+
+  const scrollToId = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 100;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
+  };
+
+  const handleFeatureExplore = (id: string) => {
+    switch (id) {
+      case 'advisor':
+        setShowChat(true);
+        break;
+      case 'filing':
+        scrollToId('how-it-works');
+        break;
+      case 'monitoring':
+        scrollToId('pricing');
+        break;
+      case 'evidence':
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Optionally focus the address input here
+        break;
+      default:
+        scrollToId('how-it-works');
+    }
+  };
+
+  // If user is logged in, show the dashboard
+  if (userSession?.isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Navbar isSolid={true} />
+        <Dashboard 
+          propertyData={userSession.propertyData} 
+          onLogout={handleLogout} 
+        />
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen selection:bg-primary/20 selection:text-primary bg-white">
@@ -26,7 +87,7 @@ const App: React.FC = () => {
       <main>
         <Hero onEstimate={handleEstimate} />
         
-        <Features />
+        <Features onExplore={handleFeatureExplore} />
         
         <HowItWorks />
 
@@ -53,8 +114,62 @@ const App: React.FC = () => {
 
         <Pricing />
 
-        {/* Refer and Earn Section */}
-        <ReferAndEarn />
+        {/* Simplified Refer and Earn Teaser Section */}
+        <section id="refer" className="py-24 bg-white relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="bg-gradient-to-br from-[#E6FFE6] to-white rounded-[3.5rem] border border-outline p-12 md:p-20 relative overflow-hidden shadow-2xl shadow-primary/5 flex flex-col lg:flex-row items-center gap-12">
+               <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+                  <Users className="w-80 h-80 text-primary rotate-12" />
+               </div>
+               
+               <div className="relative z-10 flex-1 space-y-8 text-center lg:text-left">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full">
+                    <Sparkles className="w-4 h-4 text-primary" />
+                    <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Community Rewards</span>
+                  </div>
+                  <h3 className="text-4xl md:text-6xl font-black text-on-surface leading-tight tracking-tighter">
+                    Help your neighbors, <br />
+                    <span className="text-primary italic">earn rewards.</span>
+                  </h3>
+                  <p className="text-lg text-on-surface-variant font-medium opacity-70 max-w-lg leading-relaxed">
+                    Refer a friend to Andy. When they successfully file their property tax protest, you'll both receive <span className="text-on-surface font-black">$50 in credits</span> toward your annual tax defense.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center lg:justify-start">
+                    <button 
+                      onClick={() => setShowReferDetail(true)}
+                      className="bg-primary hover:bg-andy-hover text-on-primary px-10 py-5 rounded-2xl font-black text-sm flex items-center justify-center gap-3 shadow-xl shadow-primary/20 transition-all active:scale-95"
+                    >
+                      Refer a Friend <ArrowRight className="w-5 h-5" />
+                    </button>
+                    <button 
+                      onClick={() => setShowReferDetail(true)}
+                      className="bg-white border-2 border-outline px-10 py-5 rounded-2xl font-black text-sm text-on-surface hover:bg-surface-variant transition-all flex items-center justify-center gap-3"
+                    >
+                      Learn More <Gift className="w-5 h-5" />
+                    </button>
+                  </div>
+               </div>
+
+               <div className="relative z-10 lg:w-[400px] shrink-0">
+                  <div className="bg-white p-4 rounded-[2.5rem] shadow-2xl border border-outline relative floating">
+                     <div className="aspect-video bg-brand-deep rounded-3xl overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=600" className="w-full h-full object-cover opacity-60" alt="Neighborhood community" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent"></div>
+                        <div className="absolute bottom-6 left-6 flex items-center gap-3">
+                           <div className="w-12 h-12 bg-white rounded-xl p-1 shadow-lg">
+                              <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/27.png" className="w-full h-full object-contain" />
+                           </div>
+                           <div className="text-white">
+                              <div className="text-[10px] font-black uppercase tracking-widest opacity-60">Andy Program</div>
+                              <div className="text-sm font-black">$50 Credit Ready</div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </section>
 
         {/* Modern Testimonials */}
         <section className="py-24 bg-white">
@@ -130,8 +245,17 @@ const App: React.FC = () => {
       {showEstimator && (
         <SavingsEstimator 
           initialAddress={currentAddress} 
-          onClose={() => setShowEstimator(false)} 
+          onClose={() => setShowEstimator(false)}
+          onLoginSuccess={handleLogin}
         />
+      )}
+
+      {showReferDetail && (
+        <ReferAndEarn onClose={() => setShowReferDetail(false)} />
+      )}
+
+      {showChat && (
+        <AndyChatbot onClose={() => setShowChat(false)} />
       )}
     </div>
   );

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Home, Search, FileText, Activity } from 'lucide-react';
 
@@ -20,21 +21,28 @@ const HowItWorks: React.FC = () => {
 
         <div className="relative">
           {/* Connection line for desktop */}
-          <div className="hidden lg:block absolute top-10 left-[12%] w-[76%] h-[2px] bg-outline z-0"></div>
+          <div className="hidden lg:block absolute top-[52px] left-[15%] w-[70%] h-[1.5px] bg-outline/50 z-0"></div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-16 lg:gap-8 relative z-10">
             {steps.map((step, idx) => (
               <div key={idx} className="group flex flex-col items-center">
-                <div className="relative mb-8 transition-transform duration-300 group-hover:scale-110">
-                  <div className="w-20 h-20 bg-primary text-on-primary shadow-lg rounded-2xl flex items-center justify-center border-4 border-on-primary-container">
-                    {React.cloneElement(step.icon as React.ReactElement, { className: "w-8 h-8" })}
+                <div className="relative mb-10 transition-all duration-500 group-hover:scale-110">
+                  {/* Icon Container: Soft Squircle based on screenshot */}
+                  <div className="w-28 h-28 bg-white text-primary shadow-[0_12px_30px_-5px_rgba(0,0,0,0.08)] rounded-[2.5rem] flex items-center justify-center border border-outline/30 group-hover:border-primary/20 group-hover:shadow-primary/10 transition-all duration-500">
+                    {React.cloneElement(step.icon as React.ReactElement<any>, { 
+                      strokeWidth: 2, 
+                      className: "w-11 h-11" 
+                    })}
                   </div>
-                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-on-surface text-surface rounded-lg flex items-center justify-center font-bold text-sm border-2 border-white">
+                  
+                  {/* Badge: Circular dark background with white number */}
+                  <div className="absolute -top-1 -right-1 w-9 h-9 bg-[#111827] text-white rounded-full flex items-center justify-center font-bold text-sm border-[4px] border-white shadow-lg">
                     {idx + 1}
                   </div>
                 </div>
-                <h4 className="text-xl font-bold text-on-surface mb-3 tracking-tight">{step.title}</h4>
-                <p className="text-center text-on-surface-variant text-sm leading-relaxed px-2 font-medium">{step.desc}</p>
+                
+                <h4 className="text-2xl font-black text-on-surface mb-4 tracking-tighter text-center">{step.title}</h4>
+                <p className="text-center text-on-surface-variant text-sm leading-relaxed px-6 font-medium opacity-70">{step.desc}</p>
               </div>
             ))}
           </div>

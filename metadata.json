@@ -2,6 +2,7 @@
   "name": "Andy App - Property Tax Protest",
   "description": "A smart partner for property tax fairness. Effortlessly protest your Texas property taxes with automated filing and expert AI guidance.",
   "requestFramePermissions": [
-    "camera"
+    "camera",
+    "geolocation"
   ]
 }

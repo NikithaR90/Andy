@@ -1,20 +1,34 @@
+
 import React from 'react';
-import { Landmark, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
 const Footer: React.FC = () => {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="bg-brand-deep text-white pt-24 pb-12 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
           <div className="lg:col-span-1">
-            <div className="flex items-center space-x-2 mb-8">
-              <div className="bg-primary p-2 rounded-lg">
-                <Landmark className="text-on-primary w-5 h-5" />
+            <div className="flex items-center space-x-3 mb-8 cursor-pointer" onClick={() => scrollToSection('home')}>
+              <div className="bg-white p-1.5 rounded-xl w-12 h-12 border border-white/10 shadow-lg">
+                <img 
+                  src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/27.png" 
+                  alt="Andy Logo" 
+                  className="w-full h-full object-contain"
+                />
               </div>
-              <span className="text-2xl font-bold">Andy<span className="text-primary">App</span></span>
+              <span className="text-2xl font-bold tracking-tight">Andy<span className="text-primary">App</span></span>
             </div>
             <p className="text-on-primary-container/50 leading-relaxed mb-8 text-sm font-medium max-w-xs">
-              Empowering Texas homeowners with AI-driven property tax protests. Fair assessments for every property, guaranteed.
+              Empowering Texas homeowners with AI-driven property tax protests. Your virtual advisor, Andy, ensures fair assessments for every property.
             </p>
             <div className="flex space-x-3">
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
@@ -28,18 +42,20 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="text-sm font-bold mb-8 text-white uppercase tracking-widest">About</h4>
             <ul className="space-y-4">
-              {['How it works', 'Pricing', 'FAQs', 'Affiliate Program', 'Refer a Friend'].map((item) => (
-                <li key={item}><a href="#" className="text-on-primary-container/40 hover:text-primary transition-colors text-sm font-medium">{item}</a></li>
-              ))}
+              <li><button onClick={() => scrollToSection('how-it-works')} className="text-on-primary-container/40 hover:text-primary transition-colors text-sm font-medium">How it works</button></li>
+              <li><button onClick={() => scrollToSection('pricing')} className="text-on-primary-container/40 hover:text-primary transition-colors text-sm font-medium">Pricing</button></li>
+              <li><button onClick={() => scrollToSection('faq')} className="text-on-primary-container/40 hover:text-primary transition-colors text-sm font-medium">FAQs</button></li>
+              <li><button onClick={() => scrollToSection('refer')} className="text-on-primary-container/40 hover:text-primary transition-colors text-sm font-medium">Refer a Friend</button></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-sm font-bold mb-8 text-white uppercase tracking-widest">Company</h4>
             <ul className="space-y-4">
-              {['About Us', 'Careers', 'Privacy Policy', 'Terms of Service', 'Contact Us'].map((item) => (
-                <li key={item}><a href="#" className="text-on-primary-container/40 hover:text-primary transition-colors text-sm font-medium">{item}</a></li>
-              ))}
+              <li><button onClick={() => scrollToSection('about')} className="text-on-primary-container/40 hover:text-primary transition-colors text-sm font-medium">Features</button></li>
+              <li><a href="#" className="text-on-primary-container/40 hover:text-primary transition-colors text-sm font-medium">Careers</a></li>
+              <li><a href="#" className="text-on-primary-container/40 hover:text-primary transition-colors text-sm font-medium">Privacy Policy</a></li>
+              <li><a href="#" className="text-on-primary-container/40 hover:text-primary transition-colors text-sm font-medium">Terms of Service</a></li>
             </ul>
           </div>
 
@@ -53,10 +69,6 @@ const Footer: React.FC = () => {
               <li className="flex items-center space-x-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
                 <span>(512) 956-1160</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-                <span>(469) 748-4860</span>
               </li>
               <li className="pt-6">
                 <div className="bg-white/5 p-4 rounded-xl flex items-center space-x-4 border border-white/5">
